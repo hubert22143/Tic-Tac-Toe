@@ -1,0 +1,167 @@
+html, body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+    background-color: #2C3333;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2C3639;
+    height: 10%;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90%;
+}
+.select-mode{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 30vw;
+    height: 40vh;
+    background-color:#2C3639;
+}
+button{
+    height: 200px;
+    width: 200px;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    background-color: hsl(0, 0%, 30%);
+    cursor: pointer;
+}
+button:hover{
+    background-color: rgba(38, 38, 38, 1);
+}
+button:active{
+    border: 1px solid skyblue;
+    transform: scale(0.8);
+}
+.playervsplayermode{
+    display: none;
+    height: 90%;
+    justify-content: center;
+    grid-template-columns: 500px auto;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+            "menu text"
+            "menu board";
+}
+.currentPlayerTurn{
+    grid-area: text;
+    display: flex;
+    justify-content: center;
+    border: 4px solid #2C3639;
+}
+.playerBoard {
+    display: grid;
+    grid-area: board;
+    grid-template-columns: repeat(3, 300px);
+    grid-template-rows: repeat(3, 200px);
+    border: 4px solid #2C3639;
+    height: max-content;
+}
+
+.playerBoard div {
+    min-width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.one{
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+.three{
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+}
+.seventh{
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+}
+.nine{
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+}
+.fifth{
+    border: 1px solid black;
+}
+.beforeyoustartgame{
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+.beforeHeader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 20%;
+    width: 100%;
+}
+.beforeForm{
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    width: 100%;
+}
+.beforeFormText{
+    display: flex;
+    justify-content: center;
+}
+.nickname-box{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+input{
+    max-width: max-content;
+    background-color: #2C3333;
+    border: 1px solid teal;
+}
+input:focus{
+    outline: none;
+    border: 1px solid aqua;
+}
+.select-side{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 10px;
+}
+.wrap-icons-container{
+    display: flex;
+}
+.svg-icon{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+.startGame{
+    width: 40%;
+    height: 100px;
+}
+.submit-button{
+    display: flex;
+    justify-content: end;
+    height: max-content;
+}
+.playerMenu{
+    display: flex;
+    grid-area: menu;
+    place-items: center;
+    flex-direction: column;
+}

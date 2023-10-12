@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic tac toe</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header">
+        <h1 id="header-text">Welcome to Tic Tac Toe game!</h1>
+    </div>
+    <div class="content">
+        <div class="select-mode">
+            <div class="beforeyoustartgame">
+                <div class="beforeHeader">
+                    <h2>Before you start playing..</h2>
+                </div>
+                <div class="beforeForm">
+                    <div class="beforeFormText">
+                        <h3>Please set your nickname and playing side!</h3>
+                    </div>
+                    <form>
+                        <div class="nickname-box">
+                            <label for="nickname" class="labelStyle">Nickname:</label>
+                            <input type="text" id="nickname" pattern="[a-zA-Z]{3,}" required title="Please enter at least 3 letters">
+                        </div>
+                        <div class="select-side">
+                            <div class="select-option">
+                                <label for="game-mode" class="labelStyle">Choose your playing side:</label>
+                                <select id="game-mode" name="game-mode">
+                                    <option value="option1" id="circle">Circle</option>
+                                    <option value="option2" id="cross">Cross</option>
+                                </select>
+                            </div>
+                            <div class="wrap-icons-container">
+                            <div class="svg-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                                    <circle cx="16" cy="16" r="12" fill="blue" />
+                                </svg>
+                                <span>Circle</span>
+                            </div>
+                            <div class="svg-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                                    <line x1="8" y1="8" x2="24" y2="24" stroke="red" stroke-width="5" />
+                                    <line x1="8" y1="24" x2="24" y2="8" stroke="red" stroke-width="5" />
+                                </svg>
+                                <span>Cross</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-button">
+                        <button type="submit" class="startGame">Start Game</button>
+                    </div>
+                    </form>
+                </div>
+            </div>            
+            <div class="PlayerVsPlayer">
+                <button id="playerButton">Player vs Player</button>
+            </div>
+            <div class="PlayerVsAi">
+                <button id="aiButton">Player vs Ai</button>
+            </div>
+        </div>
+    </div>
+    <div class="playervsplayermode">
+        <div class="playerMenu">
+            <div class="menuText">
+                <h3>There is your menu</h3>
+            </div>
+            <div class="menuOptions">
+                <button type="reset">Reset Board</button>
+            </div>
+        </div>
+        <div class="currentPlayerTurn">
+            <h1 id="currentPlayer">The current turn is for: </h1>
+        </div>
+        <div class="playerBoard">
+            <div class="boardBox one">1</div>
+            <div class="boardBox two">2</div>
+            <div class="boardBox three">3</div>
+            <div class="boardBox four">4</div>
+            <div class="boardBox fifth">5</div>
+            <div class="boardBox sixth">6</div>
+            <div class="boardBox seventh">7</div>
+            <div class="boardBox eight">8</div>
+            <div class="boardBox nine">9</div>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
