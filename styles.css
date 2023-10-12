@@ -79,23 +79,23 @@ button:active{
     justify-content: center;
     align-items: center;
 }
-.one{
+.boardBox:nth-child(1){
     border-bottom: 1px solid black;
     border-right: 1px solid black;
 }
-.three{
+.boardBox:nth-child(3){
     border-bottom: 1px solid black;
     border-left: 1px solid black;
 }
-.seventh{
+.boardBox:nth-child(7){
     border-top: 1px solid black;
     border-right: 1px solid black;
 }
-.nine{
+.boardBox:nth-child(9){
     border-left: 1px solid black;
     border-top: 1px solid black;
 }
-.fifth{
+.boardBox:nth-child(5){
     border: 1px solid black;
 }
 .beforeyoustartgame{

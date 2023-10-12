@@ -15,8 +15,6 @@ playerButton.addEventListener('click', () => {
     beforeYouStartBox.style.alignItems = "center";
     beforeYouStartBox.style.flexDirection = "column";
 });
-
-
 const startGame = document.querySelector('.startGame');
 const nicknameInput = document.getElementById('nickname');
 let nickname;
@@ -25,28 +23,42 @@ nicknameInput.addEventListener('change', () => {
     if (nickname.trim() === '') {
         alert('Nickname cannot be empty');
     }
-
 });
 function getMarker (){
     const selectElements = document.getElementById('game-mode');
     function getSelectedValue(){
         let selectedOption = selectElements.value;
-        if(selectedOption === 'option1'){
-            selectedOption = "Circle";
-        }else if(selectedOption === 'option2'){
-            selectedOption = "Cross";
+        switch(selectedOption){
+            case 'option1':
+                selectedOption = 'Circle';
+                break;
+            case 'option2':
+                selectedOption = 'Cross';
+                break;
+            default:
+                selectedOption = 'Circle';
         }
         return {selectedOption}
     }
     return{getSelectedValue};
 }
-let chosenMarker = '';
+let chosenMarker = 'Circle';
 const checkedOption = document.getElementById('game-mode');
 checkedOption.addEventListener('change', () => {
     chosenMarker = getMarker().getSelectedValue().selectedOption;
     console.log(chosenMarker);
 });
 
+function switchPlayer(currentPlayer) {
+    if (currentPlayer === firstPlayerMarker) {
+        return secondPlayerMarker;
+    } else {
+        return firstPlayerMarker;
+    }
+}
+let currentPlayer;
+let firstPlayerMarker;
+let secondPlayerMarker;
 startGame.addEventListener('click', (e) => {
     const nicknameValue = nicknameInput.value;
     if (nicknameValue.trim() === '') {
@@ -60,12 +72,9 @@ startGame.addEventListener('click', (e) => {
         entryMenu.style.display = 'none';
         boardBoxHolder.style.display = 'grid';
     }
-
-    let firstPlayerMarker = chosenMarker;
+    firstPlayerMarker = chosenMarker;
     console.log("The first player marker is: " ,firstPlayerMarker);
     const secondPlayerNickname = "Bob";
-
-    let secondPlayerMarker;
     if(firstPlayerMarker === 'Circle'){
         secondPlayerMarker = 'Cross';
         console.log(secondPlayerMarker);
@@ -74,5 +83,56 @@ startGame.addEventListener('click', (e) => {
         secondPlayerMarker = 'Circle';
         console.log(secondPlayerMarker);
         console.log(secondPlayerNickname);
-    }
+    }  
+    currentPlayer = firstPlayerMarker;
+    createGameBoard();
 });
+const createGameBoard = () => {
+    const boardContainer = document.querySelector('.playerBoard');
+    const cells = Array.from({length: 9}, (_,index) => {
+        const cell = document.createElement('div');
+        cell.textContent = index + 1;
+        cell.classList.add('boardBox');
+        function checkForTie() {
+            return cells.every(cell => cell.textContent !== 'Cross' && cell.textContent !== 'Circle');
+        }
+        function checkForWin(){
+            const winCombinations =[
+                [0,1,2], [3,4,5] , [6,7,8],
+                [0,3,6], [1,4,7] , [2,5,8],
+                [0,4,8], [2,4,6]
+            ];
+            for(const combination of winCombinations){
+                const [a,b,c] = combination;
+                if(cells[a].textContent === cells[b].textContent &&
+                   cells[b].textContent === cells[c].textContent){
+                    return cells[a].textContent;
+                   }else if(checkForTie()){
+                    return alert("It is a tie");
+                   }
+                   return null;
+            }
+        }
+        cell.addEventListener('click', () => {
+            if(!cell.classList.contains('filled')){
+                console.log("The current player is: " , currentPlayer);
+                if(currentPlayer === firstPlayerMarker){
+                    cell.textContent = firstPlayerMarker;
+                }else{
+                    cell.textContent = secondPlayerMarker;
+                }
+                cell.classList.add('filled');
+
+                const winner = checkForWin();
+                if(winner){
+                    alert(`Player ${winner,currentPlayer} wins!`);
+                }else{
+                    currentPlayer = switchPlayer(currentPlayer);
+                }
+            }
+        })
+        return cell;
+    });
+    cells.forEach(cell => boardContainer.appendChild(cell));
+}
+
