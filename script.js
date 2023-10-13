@@ -59,6 +59,7 @@ function switchPlayer(currentPlayer) {
 let currentPlayer;
 let firstPlayerMarker;
 let secondPlayerMarker;
+let secondPlayerNickname;
 startGame.addEventListener('click', (e) => {
     const nicknameValue = nicknameInput.value;
     if (nicknameValue.trim() === '') {
@@ -74,7 +75,7 @@ startGame.addEventListener('click', (e) => {
     }
     firstPlayerMarker = chosenMarker;
     console.log("The first player marker is: " ,firstPlayerMarker);
-    const secondPlayerNickname = "Bob";
+    secondPlayerNickname = "Bob";
     if(firstPlayerMarker === 'Circle'){
         secondPlayerMarker = 'Cross';
         console.log(secondPlayerMarker);
@@ -94,7 +95,7 @@ const createGameBoard = () => {
         cell.textContent = index + 1;
         cell.classList.add('boardBox');
         function checkForTie() {
-            return cells.every(cell => cell.textContent !== 'Cross' && cell.textContent !== 'Circle');
+            return cells.every(cell => cell.textContent === 'Cross' || cell.textContent === 'Circle');
         }
         function checkForWin(){
             const winCombinations =[
@@ -105,13 +106,12 @@ const createGameBoard = () => {
             for(const combination of winCombinations){
                 const [a,b,c] = combination;
                 if(cells[a].textContent === cells[b].textContent &&
-                   cells[b].textContent === cells[c].textContent){
+                   cells[b].textContent === cells[c].textContent &&
+                   cells[c].textContent === cells[a].textContent){
                     return cells[a].textContent;
-                   }else if(checkForTie()){
-                    return alert("It is a tie");
                    }
-                   return null;
             }
+            return null;
         }
         cell.addEventListener('click', () => {
             if(!cell.classList.contains('filled')){
@@ -122,11 +122,16 @@ const createGameBoard = () => {
                     cell.textContent = secondPlayerMarker;
                 }
                 cell.classList.add('filled');
-
+                if(checkForTie()){
+                    alert(`${nickname,secondPlayerNickname} Yo! It is a tie!`)
+                    
+                }
                 const winner = checkForWin();
-                if(winner){
-                    alert(`Player ${winner,currentPlayer} wins!`);
-                }else{
+                if (winner) {
+                    const winningPlayer = (winner === firstPlayerMarker) ? nickname : secondPlayerNickname;
+                    alert(`Player ${winningPlayer} wins!`);
+                    
+                } else {
                     currentPlayer = switchPlayer(currentPlayer);
                 }
             }
