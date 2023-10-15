@@ -48,6 +48,7 @@ button{
 }
 button:hover{
     background-color: rgba(38, 38, 38, 1);
+    color: white;
 }
 button:active{
     border: 1px solid skyblue;
@@ -67,6 +68,7 @@ button:active{
     grid-area: text;
     display: flex;
     justify-content: center;
+    align-items: center;
     border: 4px solid #2C3639;
 }
 .playerBoard {
@@ -104,6 +106,10 @@ button:active{
 .boardBox:nth-child(5){
     border: 1px solid black;
 }
+.boardBox svg{
+    min-height: 100px;
+    min-width: 100px;
+}
 .beforeyoustartgame{
     display: none;
     width: 100%;
@@ -120,7 +126,6 @@ button:active{
 .beforeForm{
     display: flex;
     flex-direction: column;
-    height: 80%;
     width: 100%;
 }
 .beforeFormText{
@@ -164,6 +169,7 @@ input:focus{
     display: flex;
     justify-content: end;
     height: max-content;
+    padding: 5px;
 }
 .playerMenu{
     display: flex;
@@ -225,3 +231,76 @@ input:focus{
     backdrop-filter: blur(3px);
     background-color: rgb(0,0,0,0.4);
 }
+#menuResetBoard{
+    width: 300px;
+    height: auto;
+}
+.AiBeforeYouStartGame{
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.aiBeforeText{
+    height: 20%;
+    padding-top: 15px;
+}
+.aiBeforeBody{
+    height: 50%;
+}
+.aiBeforeFooter{
+    height: 30%;
+}
+.aiBeforeFooter button{
+    height: 70%;
+}
+.bot-advance-level{
+    display: flex;
+    justify-content: center;
+}
+.aiMarkerSet{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 10px;
+}
+.aiInputMarker input[type="radio"] {
+    display: none;
+  }
+  .aiInputMarker label {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+  }
+  .aiInputMarker label::before {
+    content: "";
+    display: flex;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #000;
+    position: absolute;
+    left: 0;
+    top: 2px;
+    transition: background-color 0.2s;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+  }
+  .aiInputMarker input[type="radio"]:checked + label::before {
+    background-color: #000;
+
+  }
+  .aiInputMarker input[type="radio"]:focus + label::before {
+    border-color: transparent;
+  }
+  .aiInputMarker input[type="radio"][value="aiCross"]:checked + label::before {
+    background-color: #2C3333;
+    content: "X";
+  }
+  .aiInputMarker input[type="radio"][value="aiCircle"]:checked + label::before {
+    background-color: #2C3333;
+    content: "O";
+  }

@@ -24,6 +24,14 @@ nicknameInput.addEventListener('change', () => {
         alert('Nickname cannot be empty');
     }
 });
+let nickname2;
+const secondNicknameInput = document.getElementById('nickname2');
+secondNicknameInput.addEventListener('change', () => {
+    nickname2 = secondNicknameInput.value;
+    if (nickname2.trim() === '') {
+        alert('Nickname cannot be empty');
+    }
+});
 let svgCircle = document.getElementById('svg-circle');
 let svgCross = document.getElementById('svg-cross');
 function getMarker (){
@@ -44,21 +52,22 @@ function getMarker (){
     }
     return{getSelectedValue};
 }
-let chosenMarker = svgCircle;
 const checkedOption = document.getElementById('game-mode');
+let chosenMarker;
+let firstPlayerMarker;
 checkedOption.addEventListener('change', () => {
     chosenMarker = getMarker().getSelectedValue().selectedOption;
-    console.log(chosenMarker);
+    firstPlayerMarker = chosenMarker;
 });
+if(firstPlayerMarker === undefined){
+    firstPlayerMarker = svgCircle;
+}
 let currentPlayerText = document.getElementById('currentPlayer');
-currentPlayerText.textContent = `Current turn is for: ${nickname}`;
 let currentPlayer;
-let firstPlayerMarker;
 let secondPlayerMarker;
-let secondPlayerNickname;
 function switchPlayer(currentPlayer) {
     if (currentPlayer === firstPlayerMarker) {
-        currentPlayerText.textContent = `Current turn is for player: ${secondPlayerNickname}`;
+        currentPlayerText.textContent = `Current turn is for player: ${nickname2}`;
         return secondPlayerMarker;
     } else {
         currentPlayerText.textContent = `Current turn is for player: ${nickname}`;
@@ -68,28 +77,28 @@ function switchPlayer(currentPlayer) {
 startGame.addEventListener('click', (e) => {
     e.preventDefault();
     nickname = nicknameInput.value;
-    if (nickname.trim() === '') {
+    currentPlayerText.textContent = `Current turn is for: ${nickname}`;
+    nickname2 = secondNicknameInput.value
+    if (nickname.trim() === '' || nickname2.trim() === ''  ) {
         e.preventDefault();
         alert('Please enter a nickname before starting the game');
-    } else if (!nickname.match(/^[a-zA-Z]{3,}$/)) {
+        return 0;
+    } else if (!nickname.match(/^[a-zA-Z]{3,}$/) || !nickname2.match(/^[a-zA-Z]{3,}$/)) {
         e.preventDefault();
         alert('Nickname must contain at least 3 letters');
+        return 0;
     } else {
         e.preventDefault();
         entryMenu.style.display = 'none';
         boardBoxHolder.style.display = 'grid';
     }
-    firstPlayerMarker = chosenMarker;
     console.log("The first player marker is: " ,firstPlayerMarker);
-    secondPlayerNickname = "Bob";
     if(firstPlayerMarker === svgCircle){
         secondPlayerMarker = svgCross;
-        console.log(secondPlayerMarker);
-        console.log(secondPlayerNickname);
+        console.log("The second player marker has been changed to",secondPlayerMarker);
     }else{
         secondPlayerMarker = svgCircle;
-        console.log(secondPlayerMarker);
-        console.log(secondPlayerNickname);
+        console.log("The second player marker has been changed to",secondPlayerMarker);
     }  
     currentPlayer = firstPlayerMarker;
     headerText.textContent = "I hope you will enjoy your game!";
@@ -108,6 +117,7 @@ const createGameBoard = () => {
             cells.forEach((item,index) => {
                 item.textContent = index + 1;
                 item.classList.remove('filled');
+                item.style.pointerEvents = 'auto';
             });
             modalContainer.style.display = 'none';
         }
@@ -116,30 +126,48 @@ const createGameBoard = () => {
         function checkForTie() {
             return cells.every(cell => cell.textContent === svgCross.textContent || cell.textContent  === svgCircle.textContent);
         }
-        function checkForWin(){
-            const winCombinations =[
-                [0,1,2], [3,4,5] , [6,7,8],
-                [0,3,6], [1,4,7] , [2,5,8],
-                [0,4,8], [2,4,6]
+        function checkForWin() {
+            const winCombinations = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
             ];
-            for(const combination of winCombinations){
-                const [a,b,c] = combination;
-                if(cells[a].textContent === cells[b].textContent &&
-                   cells[b].textContent === cells[c].textContent){
-                    return cells[a].textContent;
-                   }
+        
+            const checkWinner = (marker) => {
+                for (const combination of winCombinations) {
+                    const [a, b, c] = combination;
+                    if (
+                        cells[a].textContent === marker.textContent &&
+                        cells[b].textContent === marker.textContent &&
+                        cells[c].textContent === marker.textContent
+                    ) {
+                        return marker;
+                    }
+                }
+                return null;
+            };
+        
+            const firstPlayerWin = checkWinner(firstPlayerMarker);
+            const secondPlayerWin = checkWinner(secondPlayerMarker);
+        
+            if (firstPlayerWin) {
+                return firstPlayerWin;
+            } else if (secondPlayerWin) {
+                return secondPlayerWin;
             }
+        
             return null;
         }
         cell.addEventListener('click', () => {
             if(!cell.classList.contains('filled')){
-                console.log("The current player is: " , currentPlayer);
                 if(currentPlayer === firstPlayerMarker){
-                    cell.innerHTML = '';
+                    cell.innerHTML = ''; 
                     cell.appendChild(firstPlayerMarker.cloneNode(true));
+                    console.log("The current player is: " , currentPlayer, firstPlayerMarker);
                 }else{
                     cell.innerHTML = '';
                     cell.appendChild(secondPlayerMarker.cloneNode(true));
+                    console.log("The current player is: " , currentPlayer, secondPlayerMarker);
                 }
                 cell.classList.add('filled');
                 if(checkForTie()){
@@ -150,14 +178,15 @@ const createGameBoard = () => {
                 }
                 const winner = checkForWin();
                 if (winner) {
-                    const winningPlayer = (winner === firstPlayerMarker) ? nickname : secondPlayerNickname;
-                    alert(`Player ${winningPlayer} wins!`);
+                    headerText.textContent = "I hope you have enjoyed the game!";
+                    const winningPlayer = (winner === firstPlayerMarker) ? nickname : nickname2;
                     currentPlayerText.textContent = `Congratulations, ${winningPlayer} you have won!`;
                     modalContainer.style.display = 'flex';
                     modalCongratulationsHeader.textContent = `Congratulations, ${winningPlayer} you have won this rough battle!`;
                     cells.forEach((cell) => {
                         cell.style.pointerEvents = 'none';
                     });
+                    return 0;
                 } else {
                     currentPlayer = switchPlayer(currentPlayer);
                 }

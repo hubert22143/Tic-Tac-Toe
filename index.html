@@ -35,10 +35,16 @@
                         <h3>Please set your nickname and playing side!</h3>
                     </div>
                     <form>
+                        <div class="nickname-holder">
                         <div class="nickname-box">
                             <label for="nickname" class="labelStyle">Nickname:</label>
                             <input type="text" id="nickname" pattern="[a-zA-Z]{3,}" required title="Please enter at least 3 letters">
                         </div>
+                        <div class="nickname-box">
+                            <label for="nickname2" class="labelStyle">Second player nickname:</label>
+                            <input type="text" id="nickname2" pattern="[a-zA-Z]{3,}" required title="Please enter at least 3 letters">
+                        </div>
+                    </div>
                         <div class="select-side">
                             <div class="select-option">
                                 <label for="game-mode" class="labelStyle">Choose your playing side:</label>
@@ -75,6 +81,42 @@
             <div class="PlayerVsAi">
                 <button id="aiButton">Player vs Ai</button>
             </div>
+            <div class="AiBeforeYouStartGame">
+                <div class="aiBeforeText">
+                    <h2>Before you start the game...</h2>
+                </div>
+                <div class="aiBeforeBody">
+                    <h2>Select bot level advance</h2>
+                    <div class="bot-advance-level">
+                        <select id="bot-level">
+                            <option>Easy</option>
+                            <option>Medium</option>
+                            <option>Hard</option>
+                        </select>
+                    </div>
+                    <h2>Write your nickname</h2>
+                    <form>
+                        <label for="Nickname" class="labelStyle">Nickname</label>
+                        <input type="text" id="aiUserNickname">
+                        <br>
+                        <div class="aiMarkerSet">
+                            <div class="aiMarkerText">
+                                <h3>Set up your marker!</h3>
+                            </div>
+                            <div class="aiInputMarker">
+                                <input type="radio" name="marker" value="aiCircle" id="theAiCircle">
+                                <label for="theAiCircle">Circle</label>
+                                <input type="radio" name="marker" value="aiCross" id="theAiCross">
+                                <label for="theAiCross">Cross</label>
+                                <input type="radio" name="marker" value="" style="display: none;">
+                              </div>
+                        </div>
+                </div>
+                <div class="aiBeforeFooter">
+                    <button type="submit" id="aiBeforeSubmitButton">Start Game</button>
+                </form>
+                </div>
+            </div>
         </div>
     </div>
     <div class="playervsplayermode">
@@ -94,6 +136,7 @@
     </div>
 
 
-    <script src="script.js"></script>
+    <script src="PlayerVsPlayer.js"></script>
+    <script src="PlayerVsAi.js"></script>
 </body>
 </html>
