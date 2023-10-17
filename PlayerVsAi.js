@@ -3,6 +3,7 @@ console.log(aiSubmitButton);
 function createGameConfiguration() {
     const state = {
         userNickname: '',
+        aiNickname: 'Ai',
         playerMarker: '',
         aiMarker: '',
     };
@@ -33,18 +34,35 @@ function createGameConfiguration() {
             state.playerMarker = circleInput.value
         }
     }
-
     function getAiMarker() {
-        state.aiMarker = state.playerMarker === 'aiCircle' ? 'aiCross' : 'aiCircle';
+        const circleInput = document.querySelector('input[name="marker"][value="aiCircle"]');
+        const crossInput = document.querySelector('input[name="marker"][value="aiCross"]');
+        state.aiMarker = state.playerMarker === circleInput.value ? crossInput.value : circleInput.value;
     }
-
+    function getBotLevelAdvance(){
+        const advanceSelector = document.getElementById('bot-level').value;
+        switch(advanceSelector){
+            case "easy":
+                console.log("There will be a function easy");
+                return "Function for easy";
+            case "medium":
+                console.log("There will be a function medium");
+                return "Function for medium";
+            case "hard":
+                console.log("There will be a function hard");
+                return "Function for hard";
+            default:
+                return "Function for easy";
+        }
+    }
     return {
+        getBotLevelAdvance,
         getPlayerMarker,
         getAiMarker,
         loadPlayersData: () => ({
             Players: {
                 playerOne: state.userNickname,
-                playerTwo: "Ai",
+                playerTwo: state.aiNickname,
             },
             Markers: {
                 playerMarker: state.playerMarker,
@@ -56,10 +74,37 @@ function createGameConfiguration() {
 const gameConfig = createGameConfiguration();
 aiSubmitButton.addEventListener('click', (e) => {
 e.preventDefault();
-console.log("yes")
-gameConfig.getPlayerMarker();
-gameConfig.getAiMarker();
+getGameBoardLogic();
+headerText.textContent = 'I hope you will enjoy the game!';
 const playersData = gameConfig.loadPlayersData();
 console.log(playersData);
+console.log(playersData.Players.playerOne);
 entryMenu.style.display = 'none';
 })
+function getGameBoardLogic(){
+    const playersData = gameConfig.loadPlayersData();
+    gameConfig.getPlayerMarker();
+    gameConfig.getAiMarker();
+    let currentAiPlayer = playersData.Players.playerOne;
+    function switchPlayer(){
+        currentAiPlayer = (currentAiPlayer === playersData.Players.playerOne) ? playersData.Players.playerTwo : playersData.Players.playerOne;
+    }
+    const boardHolder = document.querySelector('.playerAiBoard');
+    const board = ['','','',
+                   '','','',
+                   '','',''];
+    board.forEach((item,index) => {
+        currentIndex = index + 1;
+        const div = document.createElement('div');
+        div.textContent = currentIndex;
+        boardHolder.appendChild(div);
+        div.addEventListener('click', () => {
+            if(!div.classList.contains('filled')){
+                div.classList.add('filled');
+                console.log("Current player is, before the change", currentAiPlayer);
+                switchPlayer();
+                console.log("Current player is: after the change",currentAiPlayer);
+            }
+        });
+    });
+}

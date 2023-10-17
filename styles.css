@@ -304,3 +304,60 @@ input:focus{
     background-color: #2C3333;
     content: "O";
   }
+
+  .playervsaimode{
+    display: grid;
+    width: 80%;
+    grid-template-areas: 
+                    "menu currentTurn"
+                    "menu board";
+  }
+  .playerAiMenu{
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    grid-area: menu;
+  }
+  #AiResetBoard{
+    width: 200px;
+    height: 100px;
+  }
+  .currentAiPlayerTurn{
+    grid-area: currentTurn;
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+  }
+  .playerAiBoard{
+    display: grid;
+    place-content: center;
+    grid-area: board;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(3,200px)
+  }
+  .playerAiBoard > div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+.playerAiBoard >div:nth-child(5){
+    border: 1px solid black;
+}
+.playerAiBoard >div:nth-child(7){
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+}
+.playerAiBoard >div:nth-child(9){
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+}
+.playerAiBoard >div:nth-child(3){
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+}
+.playerAiBoard >div:nth-child(1){
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+}
