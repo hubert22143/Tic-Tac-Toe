@@ -267,6 +267,16 @@ input:focus{
     flex-direction: column;
     margin-top: 10px;
 }
+.aiInputMarker{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.aiSvgHolder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .aiInputMarker input[type="radio"] {
     display: none;
   }

@@ -2,10 +2,10 @@ const aiSubmitButton = document.getElementById('aiBeforeSubmitButton');
 console.log(aiSubmitButton);
 function createGameConfiguration() {
     const state = {
-        userNickname: '',
+        userNickname: 'Nameless',
         aiNickname: 'Ai',
-        playerMarker: '',
-        aiMarker: '',
+        playerMarker: 'aiCircle',
+        aiMarker: 'aiCross',
     };
 
     const aiButton = document.getElementById('aiButton');
@@ -38,6 +38,8 @@ function createGameConfiguration() {
         const circleInput = document.querySelector('input[name="marker"][value="aiCircle"]');
         const crossInput = document.querySelector('input[name="marker"][value="aiCross"]');
         state.aiMarker = state.playerMarker === circleInput.value ? crossInput.value : circleInput.value;
+        console.log(state.playerMarker);
+        console.log(state.aiMarker);
     }
     function getBotLevelAdvance(){
         const advanceSelector = document.getElementById('bot-level').value;
@@ -76,9 +78,6 @@ aiSubmitButton.addEventListener('click', (e) => {
 e.preventDefault();
 getGameBoardLogic();
 headerText.textContent = 'I hope you will enjoy the game!';
-const playersData = gameConfig.loadPlayersData();
-console.log(playersData);
-console.log(playersData.Players.playerOne);
 entryMenu.style.display = 'none';
 })
 function getGameBoardLogic(){
@@ -86,8 +85,33 @@ function getGameBoardLogic(){
     gameConfig.getPlayerMarker();
     gameConfig.getAiMarker();
     let currentAiPlayer = playersData.Players.playerOne;
+    let currentMarker = playersData.Markers[currentPlayer];
     function switchPlayer(){
-        currentAiPlayer = (currentAiPlayer === playersData.Players.playerOne) ? playersData.Players.playerTwo : playersData.Players.playerOne;
+        currentAiPlayer = (currentAiPlayer === playersData.Players.playerOne.state.userNickname) ? playersData.Players.playerTwo : playersData.Players.playerOne;
+    }
+    function getSvgTextcontent(currentPlayer, div) {
+        const svgCircle = document.getElementById('ai-svg-circle');
+        const svgCross = document.getElementById('ai-svg-cross');
+        console.log(svgCircle);
+        console.log(svgCross);
+        if (currentPlayer === playersData.Players.playerOne) {
+            if (playersData.Markers.playerOne === "aiCircle") {
+                console.log("Current player mark is circle, setting the content to SVG circle");
+                const svgContent = svgCircle.outerHTML;
+                div.innerHTML = svgContent;
+            } else {
+                const svgContent = svgCross.outerHTML;
+                div.innerHTML = svgContent;
+            }
+        } else if (currentPlayer === playersData.Players.playerTwo) {
+            if (playersData.Markers.aiMarker === "aiCircle") {
+                const svgContent = svgCircle.outerHTML;
+                div.innerHTML = svgContent;
+            } else {
+                 const svgContent = svgCross.outerHTML;
+                div.innerHTML = svgContent;
+            }
+        }
     }
     const boardHolder = document.querySelector('.playerAiBoard');
     const board = ['','','',
@@ -100,10 +124,13 @@ function getGameBoardLogic(){
         boardHolder.appendChild(div);
         div.addEventListener('click', () => {
             if(!div.classList.contains('filled')){
-                div.classList.add('filled');
                 console.log("Current player is, before the change", currentAiPlayer);
+                console.log("Current mark is",currentAiPlayer)
+                getSvgTextcontent(currentAiPlayer,div);
+                console.log(currentAiPlayer);
+                console.log(div);
+                div.classList.add('filled');
                 switchPlayer();
-                console.log("Current player is: after the change",currentAiPlayer);
             }
         });
     });
