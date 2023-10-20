@@ -63,12 +63,8 @@ getGameBoardLogic();
 headerText.textContent = 'I hope you will enjoy the game!';
 entryMenu.style.display = 'none';
 })
-function getAiDifficulty(){
-    const boardHolder = document.querySelector('.playerAiBoard');
-    const board = ['','','',
-                   '','','',
-                   '','',''];
-function aiEasyMode(board,aiMarker) {
+function getAiDifficulty(board,aiMarker){
+function aiEasyMode() {
         const randomIndex = Math.floor(Math.random() * board.length);
         const div = board[randomIndex];
         if (div.textContent === '' && !div.classList.contains('filled')) {
@@ -76,25 +72,25 @@ function aiEasyMode(board,aiMarker) {
             div.classList.add('filled');
         }
     }
-    function aiMediumMode(board,aiMarker){
+    function aiMediumMode(){
 
 
     }
-    function aiHardMode(board,aiMarker){
+    function aiHardMode(){
 
     }
-    function getBotLevelAdvance(board,aiMarker){
+    function getBotLevelAdvance(){
         const advanceSelector = document.getElementById('bot-level').value;
         switch(advanceSelector){
             case "easy":
                 console.log("There will be a function easy");
-                return aiEasyMode(board,aiMarker);
+                return aiEasyMode();
             case "medium":
                 console.log("There will be a function medium");
-                return "Function for medium";
+                return aiMediumMode();
             case "hard":
                 console.log("There will be a function hard");
-                return "Function for hard";
+                return aiHardMode();
             default:
                 console.log("Choosed function by default easy");
                 return aiEasyMode();
@@ -108,7 +104,6 @@ function getGameBoardLogic(){
     const playersData = gameConfig.loadPlayersData();
     gameConfig.getPlayerMarker();
     gameConfig.getAiMarker();
-    const getAiDiff = getAiDifficulty();
     let currentAiPlayer = playersData.Players.playerOne;
     let currentMarker = playersData.Markers.playerMarker;
     function switchPlayer(){
@@ -131,18 +126,18 @@ function getGameBoardLogic(){
     const board = ['','','',
                    '','','',
                    '','',''];
-    const getAiMode = getAiDiff.getBotLevelAdvance();
+    let aiMarker = playersData.Markers.aiMarker;
+    const aiDifficulty = getAiDifficulty(board,aiMarker);
     board.forEach((item,index) => {
         const div = document.createElement('div');
         div.textContent = index + 1;
         boardHolder.appendChild(div);
         div.addEventListener('click', () => {
             if(!div.classList.contains('filled')){
-                let aiMarker = playersData.Markers.aiMarker;
-                getAiMode(board,aiMarker);
                 getSvgTextcontent(currentAiPlayer,div);
                 div.classList.add('filled');
                 switchPlayer();
+                aiDifficulty.getBotLevelAdvance(board,aiMarker);
             }
         });
     });
