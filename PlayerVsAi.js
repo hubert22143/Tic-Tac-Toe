@@ -27,11 +27,11 @@ function createGameConfiguration() {
         const circleInput = document.querySelector('input[name="marker"][value="aiCircle"]');
         const crossInput = document.querySelector('input[name="marker"][value="aiCross"]');
         if (circleInput.checked) {
-            state.playerMarker = circleInput.value;
+            return circleInput.value;
         } else if (crossInput.checked) {
-            state.playerMarker = crossInput.value;
+            return crossInput.value;
         } else {
-            state.playerMarker = circleInput.value
+            return circleInput.value;
         }
     }
     function getAiMarker() {
@@ -100,45 +100,80 @@ function aiEasyMode() {
         getBotLevelAdvance,
     }
 }
-function getGameBoardLogic(){
+function getGameBoardLogic() {
     const playersData = gameConfig.loadPlayersData();
-    gameConfig.getPlayerMarker();
-    gameConfig.getAiMarker();
-    let currentAiPlayer = playersData.Players.playerOne;
-    let currentMarker = playersData.Markers.playerMarker;
-    function switchPlayer(){
-        currentAiPlayer = (currentAiPlayer === playersData.Players.playerOne) ? playersData.Players.playerTwo : playersData.Players.playerOne;
-        currentMarker = (currentAiPlayer === playersData.Players.playerOne) ? playersData.Markers.playerMarker : playersData.Markers.aiMarker;
+    const playerOneMarker = gameConfig.getPlayerMarker();
+    const aiMarker = gameConfig.getAiMarker();
+
+    let currentPlayer = playersData.Players.playerOne;
+    let currentMarker = playerOneMarker;
+    console.log(currentPlayer);
+    console.log("The player marker is: " ,currentMarker);
+    const boardHolder = document.querySelector('.playerAiBoard');
+
+    const board = ['', '', '',
+                   '', '', '',
+                   '', '', ''];
+
+
+
+    function switchPlayer() {
+    console.log("Before current player and marker", currentPlayer, currentMarker);
+    currentPlayer = (currentPlayer === playersData.Players.playerOne) ? playersData.Players.playerTwo : playersData.Players.playerOne;
+    currentMarker = (currentMarker === playersData.Markers.playerOne) ? playersData.Markers.playerTwo : playersData.Markers.playerOne;
+} 
+    function checkForTie() {
+        return board.every(cell => cell === playerOneMarker || cell === aiMarker);
     }
-    function getSvgTextcontent(currentPlayer, div) {
-        const svgCircle = document.getElementById('ai-svg-circle');
-        const svgCross = document.getElementById('ai-svg-cross');
-        if (currentPlayer === playersData.Players.playerOne) {
-            currentMarker = playersData.Markers.playerMarker;
-        } else {
-            currentMarker = playersData.Markers.aiMarker;
+    function checkForWin() {
+        const winCombinations = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ];
+
+        for (const combination of winCombinations) {
+            const [a, b, c] = combination;
+            if (board[a] === currentMarker && board[b] === currentMarker && board[c] === currentMarker) {
+                return currentMarker;
+            }
         }
-        console.log(`Current player mark is ${currentMarker}, setting the content to SVG ${currentMarker}`);
-        const svgContent = (currentMarker === 'aiCircle') ? svgCircle.outerHTML : svgCross.outerHTML;
+
+        return null;
+    }
+    function handlePlayerMove(index, div) {
+        if (!div.classList.contains('filled')) {
+            div.classList.add('filled');
+            getSvgTextcontent(div);
+            switchPlayer();
+        }
+    }
+    function getSvgTextcontent(div) {
+        const aisvgCircle = document.getElementById('ai-svg-circle');
+        const aisvgCross = document.getElementById('ai-svg-cross');
+    
+        let svgContent;
+    
+        if (currentMarker === 'aiCircle') {
+            svgContent = aisvgCircle.outerHTML;
+        } else {
+            svgContent = aisvgCross.outerHTML;
+        }
         div.innerHTML = svgContent;
     }
-    const boardHolder = document.querySelector('.playerAiBoard');
-    const board = ['','','',
-                   '','','',
-                   '','',''];
-    let aiMarker = playersData.Markers.aiMarker;
-    const aiDifficulty = getAiDifficulty(board,aiMarker);
-    board.forEach((item,index) => {
+    
+    for (let index = 0; index < 9; index++) {
         const div = document.createElement('div');
         div.textContent = index + 1;
         boardHolder.appendChild(div);
-        div.addEventListener('click', () => {
-            if(!div.classList.contains('filled')){
-                getSvgTextcontent(currentAiPlayer,div);
-                div.classList.add('filled');
-                switchPlayer();
-                aiDifficulty.getBotLevelAdvance(board,aiMarker);
-            }
-        });
-    });
+    
+        (function (currentIndex) {
+            div.addEventListener('click', () => {
+                if (!div.classList.contains('filled')) {
+                    handlePlayerMove(currentIndex, div);
+                    console.log("After current player and marker", currentPlayer, currentMarker);
+                }
+            });
+        })(index);
+    }
 }
