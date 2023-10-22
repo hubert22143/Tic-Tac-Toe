@@ -8,6 +8,7 @@ function createGameConfiguration() {
         aiMarker: 'aiCross',
     };
 
+    
     const aiButton = document.getElementById('aiButton');
     const aiBeforeContainer = document.querySelector('.AiBeforeYouStartGame');
     const playerButton = document.getElementById('playerButton');
